@@ -1,0 +1,19 @@
+{
+    "name": "lenovo/lowongan-kerja",
+    "description": "Website Lowongan Kerja menggunakan Slim Framework",
+    "type": "project",
+    "license": "mit",
+    "authors": [
+        {
+            "name": "Devinda Dhea",
+            "email": "devindadheaindira@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "slim/slim": "4.14",
+        "slim/psr7": "^1.7",
+        "catfan/medoo": "2.2",
+        "slim/twig-view": "3.4"
+    }
+}
