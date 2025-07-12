@@ -1,0 +1,65 @@
+<style>
+    /* efek HOVER (saat diarahkan kursor) */
+    nav .nav-link:hover {
+        background-color: #A5C882;     /* hijau muda palette */
+        color: #ffffff !important;
+        border-radius: 6px;
+        transition: background-color .25s;
+    }
+
+    /* efek ACTIVE (link yang sedang dibuka) */
+    nav .nav-link.active {
+        background-color: #3A6351;     /* hijau olive tua */
+        color: #ffffff !important;
+        border-radius: 6px;
+    }
+
+    /* ikon ikut berubah warna */
+    nav .nav-link:hover i,
+    nav .nav-link.active i {
+        color: #ffffff !important;
+    }
+</style>
+
+<nav class="bg-white border-end shadow-sm min-vh-100" style="width: 240px; border-right: 1px solid #E0E0E0;">
+    <div class="p-4 d-flex flex-column justify-content-between h-100">
+        <div>
+            <h5 class="text-center fw-bold mb-4" style="color: #3A6351;">Admin Panel</h5>
+            <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                    <a href="{{ base_path() }}/dashboard" class="nav-link d-flex align-items-center gap-2 text-dark">
+                        <i class="bi bi-grid text-success"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="{{ base_path() }}/admin/profile" class="nav-link d-flex align-items-center gap-2 text-dark">
+                        <i class="bi bi-person text-success"></i> Profil
+                    </a>
+                </li>
+             
+
+                <li class="nav-item mb-2">
+                    <a href="{{ base_path() }}/admin/jobs" class="nav-link d-flex align-items-center gap-2 text-dark">
+                        <i class="bi bi-briefcase-fill text-success"></i> Kelola Lowongan
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="{{ base_path() }}/admin/categories" class="nav-link d-flex align-items-center gap-2 text-dark">
+                        <i class="bi bi-tags-fill text-success"></i> Kategori
+                    </a>
+                </li>
+                <li class="nav-item mb-2">
+                    <a href="{{ base_path() }}/admin/pelamar" class="nav-link d-flex align-items-center gap-2 text-dark">
+                        <i class="bi bi-people-fill text-success"></i> Data Pelamar
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-4">
+            <a href="{{ base_path() }}/logout" class="btn w-100 text-white d-flex align-items-center justify-content-center gap-2" style="background-color: #3A6351;">
+                <i class="bi bi-box-arrow-right"></i> Logout
+            </a>
+        </div>
+    </div>
+</nav>

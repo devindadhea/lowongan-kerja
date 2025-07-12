@@ -1,0 +1,94 @@
+{% extends "layouts/master_company.twig" %}
+
+{% block title %}Profil Perusahaan{% endblock %}
+{% block page_title %}Profil Perusahaan{% endblock %}
+
+{% block content %}
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, #457B9D, #1D3557);
+        color: #fff;
+        border-radius: 12px 12px 0 0;
+        padding: 2rem 2rem 3rem 2rem;
+        position: relative;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 4px solid #fff;
+        position: absolute;
+        bottom: -50px;
+        left: 2rem;
+        background-color: #ffffff;
+    }
+
+    .section-body {
+        background-color: #ffffff;
+        padding: 3rem 2rem 2rem 2rem;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    .btn-save {
+        background-color: #457B9D;
+        border: none;
+    }
+
+    .btn-save:hover {
+        background-color: #355070;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="bg-white shadow rounded">
+        <div class="profile-header">
+            <img src="https://ui-avatars.com/api/?name={{ company.nama_perusahaan | url_encode }}&background=1D3557&color=fff&size=100"
+                 alt="Logo" class="profile-avatar">
+            <div class="ms-5 ps-5">
+                <h4 class="mb-1">{{ session.user.nama_perusahaan }}</h4>
+                <p class="mb-0 text-white-50">{{ session.user.email }}</p>
+            </div>
+        </div>
+
+        <div class="section-body">
+        
+
+        <form method="POST" action="{{ base_path() }}/company/profileCompany">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Nama Perusahaan</label>
+                        <input type="text" class="form-control" name="nama_perusahaan" value="{{ company.nama_perusahaan }}">
+                    </div>
+
+                  <div class="col-md-6">
+                    <label class="form-label">Alamat</label>
+                    <input type="text" class="form-control" name="alamat_perusahaan" value="{{ company.alamat_perusahaan }}">
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label">Nomor Telepon</label>
+                    <input type="text" class="form-control" name="no_telp" value="{{ company.no_telp }}">
+                </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Deskripsi</label>
+                        <input type="text" class="form-control" name="deskripsi" value="{{ company.deskripsi }}">
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-save px-4 py-2 text-white">
+                        <i "></i> Simpan Profil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

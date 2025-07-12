@@ -1,0 +1,22 @@
+{% extends "layouts/master.twig" %}
+
+{% block title %}Tambah Kategori{% endblock %}
+
+{% block content %}
+<div class="d-flex" style="min-height: 100vh; background-color: #FAFAFA;">
+    <div class="flex-grow-1 p-4">
+        <h2 class="fw-bold mb-3" style="color: #2E2E2E;">Tambah Kategori</h2>
+        <form method="POST" action="{{ base_path() }}/admin/categories/create">
+            <div class="mb-3">
+                <label for="nama_kategori" class="form-label" style="color: #2E2E2E;">Nama Kategori</label>
+                <input type="text" class="form-control border" id="nama_kategori" name="nama_kategori" required>
+            </div>
+
+            <button type="submit" class="btn" style="background-color: #3A6351; color: white;">
+                <i class="bi bi-save me-1"></i> Simpan Kategori
+            </button>
+            <a href="{{ base_path() }}/admin/categories" class="btn btn-secondary ms-2">Batal</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Daftar Akun Perusahaan</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #F1F1F1;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        .bg-primary-custom {
+            background-color: #1D3557;
+        }
+        .text-primary-custom {
+            color: #1D3557;
+        }
+        .text-muted-custom {
+            color: #2B2D42;
+        }
+        .btn-primary-custom {
+            background-color: #1D3557;
+            color: #fff;
+        }
+        .btn-primary-custom:hover {
+            background-color: #457B9D;
+        }
+        .link-custom {
+            color: #457B9D;
+        }
+    </style>
+</head>
+<body>
+<div class="row g-0" style="min-height: 100vh;">
+    <!-- Kolom Kiri -->
+    <div class="col-md-6 d-flex flex-column justify-content-center align-items-center text-white px-4 bg-primary-custom">
+        <h3 class="text-center fw-bold mb-2">Pendaftaran Akun Perusahaan</h3>
+        <p class="text-center">Daftarkan perusahaan Anda untuk memposting lowongan kerja</p>
+    </div>
+
+    <!-- Kolom Kanan -->
+    <div class="col-md-6 d-flex align-items-center justify-content-center bg-white">
+        <div style="width: 100%; max-width: 400px;">
+            <h3 class="text-center mb-2 fw-bold text-primary-custom">Daftar Perusahaan</h3>
+            <p class="text-center mb-4 text-muted-custom">Isi data perusahaan Anda dengan benar</p>
+
+            {% if error %}
+                <div class="alert alert-danger text-center rounded-pill py-2">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <form method="POST" action="{{ base_path() }}/register-company">
+                <div class="mb-3">
+                    <label class="form-label text-muted-custom">Nama Perusahaan</label>
+                    <input type="text" name="nama" class="form-control rounded-pill border" placeholder="Contoh: PT. Maju Sejahtera" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted-custom">Email Perusahaan</label>
+                    <input type="email" name="email" class="form-control rounded-pill border" placeholder="Masukkan email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted-custom">Password</label>
+                    <input type="password" name="password" class="form-control rounded-pill border" placeholder="Masukkan password" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-lg rounded-pill fw-semibold btn-primary-custom">
+                        DAFTAR PERUSAHAAN
+                    </button>
+                </div>
+            </form>
+
+            <p class="mt-4 text-center text-muted-custom">Sudah punya akun perusahaan?
+                <a href="{{ base_path() }}/login" class="link-custom">Login di sini</a>
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

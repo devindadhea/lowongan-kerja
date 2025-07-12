@@ -1,0 +1,62 @@
+{% extends "layouts/master_company.twig" %}
+
+{% block page_title %}Lowongan Saya{% endblock %}
+{% block page_subtitle %}Daftar semua lowongan yang telah Anda buat{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="mb-0 text-dark">Total: {{ jobs | length }} lowongan</h5>
+    <a href="{{ base_path() }}/company/jobs/create" class="btn rounded-pill px-4 py-2 text-white" style="background-color: #1D3557;">
+        <i class="bi bi-plus-lg me-1"></i> Tambah Lowongan
+    </a>
+</div>
+
+<div class="table-responsive shadow-sm border rounded bg-white">
+    <table class="table table-hover align-middle mb-0">
+        <thead style="background-color: #457B9D;">
+            <tr class="text-white">
+                <th style="width: 5%;">No</th>
+                <th>Kategori</th>
+                <th>Judul</th>
+                <th>Gaji</th>
+                <th>Lokasi</th>
+                <th>Deskripsi</th>
+                 <th>Status</th>
+                
+
+                <th style="width: 20%;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if jobs|length > 0 %}
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                         <td>{{ job.kategori }}</td>
+                        <td>{{ job.judul }}</td>
+                        <td>Rp {{ job.gaji | number_format(0, ',', '.') }}</td>
+                        <td>{{ job.lokasi }}</td>
+                        <td>{{ job.deskripsi }}</td>
+                         
+                                        <td>
+                    {% if job.status == 'aktif' %}
+                    <span class="badge" style="background-color: #ceeeafff; color: #000000ff; font-weight: 600;">Aktif</span>
+                    {% else %}
+                    <span class="badge" style="background-color: #E0E0E0; color: #2E2E2E; font-weight: 600;">Nonaktif</span>
+                    {% endif %}
+                </td>
+                        <td>
+                            <a href="{{ base_path() }}/company/jobs/edit/{{ job.id }}" class="btn btn-sm btn-warning rounded-pill px-3">Edit</a>
+                            <a href="{{ base_path() }}/company/jobs/delete/{{ job.id }}" class="btn btn-sm btn-danger rounded-pill px-3" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Belum ada lowongan</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

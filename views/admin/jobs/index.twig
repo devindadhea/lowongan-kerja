@@ -1,0 +1,75 @@
+{% extends "layouts/master.twig" %}
+
+{% block page_title %}Kelola Lowongan{% endblock %}
+{% block page_subtitle %}Atur dan kelola data lowongan pekerjaan{% endblock %}
+
+{% block content %}
+<div class="mb-4 d-flex justify-content-end">
+    <a href="{{ base_path() }}/admin/jobs/create" 
+       class="btn" 
+       style="background-color: #3A6351; color: #FAFAFA; border-radius: 8px; padding: 0.5rem 1.5rem; font-weight: 600; box-shadow: 0 2px 6px rgba(58,99,81,0.3); transition: background-color 0.3s;">
+        <i class="bi bi-plus-lg me-2"></i> Tambah Lowongan
+    </a>
+</div>
+
+{% if jobs|length > 0 %}
+<div class="table-responsive shadow-sm rounded" style="background-color: #FAFAFA; border: 1px solid #E0E0E0;">
+    <table class="table align-middle mb-0" style="min-width: 720px;">
+        <thead style="background-color: #3A6351; color: #FAFAFA;">
+            <tr>
+                <th style="width: 50px;">No</th>
+                <th>Perusahaan</th>
+                <th>Judul</th>
+                <th>Lokasi</th>
+                <th>Gaji</th>
+                <th>Kategori</th>
+                <th>Status</th>
+                <th>Dibuat</th>
+                <th style="width: 120px;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ job.nama_perusahaan }}</td>
+                <td>{{ job.judul }}</td>
+                <td>{{ job.lokasi }}</td>
+                <td>Rp {{ job.gaji|number_format(0, ',', '.') }}</td>
+                <td>{{ job.nama_kategori }}</td>
+                <td>
+                    {% if job.status == 'aktif' %}
+                    <span class="badge" style="background-color: #A5C882; color: #3A6351; font-weight: 600;">Aktif</span>
+                    {% else %}
+                    <span class="badge" style="background-color: #E0E0E0; color: #2E2E2E; font-weight: 600;">Nonaktif</span>
+                    {% endif %}
+                </td>
+                <td>{{ job.created_at|date("d M Y") }}</td>
+                <td>
+                    <a href="{{ base_path() }}/admin/jobs/edit/{{ job.id }}" 
+                    class="btn btn-sm" 
+                    style="background-color: #3A6351; color: #FAFAFA; margin-right: 6px;" 
+                    title="Edit Lowongan">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <form method="POST" action="{{ base_path() }}/admin/jobs/delete/{{ job.id }}" class="d-inline" onsubmit="return confirm('Yakin ingin menghapus lowongan ini?');">
+                        <button class="btn btn-sm" 
+                                style="background-color: #E63946; color: #FAFAFA;" 
+                                title="Hapus Lowongan" type="submit">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+</div>
+{% else %}
+<div class="alert text-center" 
+     style="background-color: #FAFAFA; color: #2E2E2E; border: 1px solid #E0E0E0; border-radius: 8px; padding: 1.5rem; font-style: italic;">
+    Belum ada lowongan.
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "layouts/master.twig" %}
+
+{% block page_title %}Daftar Pelamar{% endblock %}
+{% block page_subtitle %}Daftar Pelamar {% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+{% if pelamarList is empty %}
+    <div class="alert" style="background-color: #DFF5E1; color: #2E7D32; border: 1px solid #AEDFB6; border-radius: 8px; padding: 1rem; font-weight: 500;">
+        <i class="bi bi-info-circle-fill me-2"></i>
+        Belum ada pelamar yang mendaftar.
+    </div>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle shadow-sm rounded bg-white">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Nama</th>
+                        <th>Email</th>
+                        <th>Lowongan</th>
+                        <th>Status</th>
+                        <th style="width: 200px;">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pelamar in pelamarList %}
+                    <tr>
+                        <td>{{ pelamar.nama }}</td>
+                        <td>{{ pelamar.email }}</td>
+                        <td>{{ pelamar.job_judul }}</td>
+                        <td>
+                            {% if pelamar.status == 'pending' %}
+                                <span class="badge bg-warning text-dark">Menunggu</span>
+                            {% elseif pelamar.status == 'accepted' %}
+                                <span class="badge bg-success">Diterima</span>
+                            {% elseif pelamar.status == 'rejected' %}
+                                <span class="badge bg-danger">Ditolak</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if pelamar.status == 'pending' %}
+                            <div class="d-flex gap-2">
+                                <form method="post" action="{{ base_path() }}/admin/applicants/status">
+                                    <input type="hidden" name="application_id" value="{{ pelamar.id }}">
+                                    <input type="hidden" name="status" value="accepted">
+                                    <button class="btn btn-success btn-sm w-100">Terima</button>
+                                </form>
+                                <form method="post" action="{{ base_path() }}/admin/applicants/status">
+                                    <input type="hidden" name="application_id" value="{{ pelamar.id }}">
+                                    <input type="hidden" name="status" value="rejected">
+                                    <button class="btn btn-danger btn-sm w-100">Tolak</button>
+                                </form>
+                            </div>
+                            {% else %}
+                                <span class="text-muted fst-italic">Sudah diproses</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
