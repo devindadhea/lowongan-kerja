@@ -1,0 +1,91 @@
+{% extends "layouts/master_user.twig" %}
+
+{% block title %}Dashboard Saya{% endblock %}
+
+{% block content %}
+<div class="p-4">
+  <h2 class="text-2xl font-bold mb-6">Dashboard Saya</h2>
+
+  <!-- Statistik Lamaran -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+
+    <!-- Total Lamaran -->
+    <div class="bg-[#1D3557] text-white rounded-2xl shadow p-6 flex items-center justify-between">
+      <div>
+        <div class="text-3xl font-bold">{{ lamaran }}</div>
+        <div class="text-sm mt-1">Total Lamaran Dikirim</div>
+      </div>
+      <i class="bi bi-send fs-1 opacity-50"></i>
+    </div>
+
+    <!-- Diterima -->
+    <div class="bg-[#457B9D] text-white rounded-2xl shadow p-6 flex items-center justify-between">
+      <div>
+        <div class="text-3xl font-bold">{{ diterima }}</div>
+        <div class="text-sm mt-1">Lamaran Diterima</div>
+      </div>
+      <i class="bi bi-check-circle fs-1 opacity-50"></i>
+    </div>
+
+    <!-- Ditolak -->
+    <div class="bg-red-500 text-white rounded-2xl shadow p-6 flex items-center justify-between">
+      <div>
+        <div class="text-3xl font-bold">{{ ditolak }}</div>
+        <div class="text-sm mt-1">Lamaran Ditolak</div>
+      </div>
+      <i class="bi bi-x-circle fs-1 opacity-50"></i>
+    </div>
+
+    <!-- Menunggu -->
+    <div class="bg-yellow-500 text-white rounded-2xl shadow p-6 flex items-center justify-between">
+      <div>
+        <div class="text-3xl font-bold">{{ menunggu }}</div>
+        <div class="text-sm mt-1">Lamaran Menunggu</div>
+      </div>
+      <i class="bi bi-clock fs-1 opacity-50"></i>
+    </div>
+
+  </div>
+
+  <!-- Lamaran Terbaru -->
+  <div class="bg-white rounded-2xl shadow p-6">
+    <h3 class="text-xl font-semibold mb-4">Lamaran Terbaru</h3>
+
+    {% if lamaran_terbaru is not empty %}
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Perusahaan</th>
+              <th>Posisi</th>
+              <th>Tanggal</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for l in lamaran_terbaru %}
+              <tr>
+                <td>{{ l.nama_perusahaan }}</td>
+                <td>{{ l.posisi }}</td>
+                <td>{{ l.tanggal|date('d M Y') }}</td>
+            <td>
+              {% if l.status == 'accepted' %}
+                <span class="badge bg-success">Diterima</span>
+              {% elseif l.status == 'rejected' %}
+                <span class="badge bg-danger">Ditolak</span>
+              {% else %}
+                <span class="badge bg-warning text-dark">Menunggu</span>
+              {% endif %}
+            </td>
+
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="text-muted">Belum ada lamaran.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

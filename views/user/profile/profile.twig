@@ -1,0 +1,108 @@
+{% extends "layouts/master_user.twig" %}
+
+{% block title %}Profil Saya{% endblock %}
+{% block page_subtitle %}Kelola informasi akun Anda{% endblock %}
+
+{% block content %}
+<style>
+    .profile-header {
+        background: linear-gradient(135deg, #457B9D, #1D3557);
+        color: #fff;
+        border-radius: 12px 12px 0 0;
+        padding: 2rem 2rem 3rem 2rem;
+        position: relative;
+    }
+
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        border: 4px solid #fff;
+        position: absolute;
+        bottom: -50px;
+        left: 2rem;
+        background-color: #ffffff;
+        object-fit: cover;
+    }
+
+    .section-body {
+        background-color: #ffffff;
+        padding: 3rem 2rem 2rem 2rem;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+
+    .btn-save {
+        background-color: #1D3557;
+        border: none;
+        color: #FAFAFA;
+        font-weight: 600;
+    }
+
+    .btn-save:hover {
+        background-color: #16324F;
+    }
+</style>
+
+<div class="container my-5">
+    <div class="bg-white shadow rounded">
+        <div class="profile-header">
+            {% set inisial = session.user.nama|default('')|replace({' ': ''})|upper|slice(0, 2) %}
+            <img src="https://ui-avatars.com/api/?name={{ inisial }}&background=1D3557&color=fff&size=100"
+                 alt="Avatar" class="profile-avatar">
+
+            <div class="ms-5 ps-5">
+                <h4 class="mb-1">{{ session.user.nama }}</h4>
+                <p class="mb-0 text-white-50">{{ session.user.email }}</p>
+            </div>
+        </div>
+
+        <div class="section-body">
+            <form method="POST" action="{{ base_path() }}/user/profile">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label class="form-label">Nama Lengkap</label>
+                       <input type="text" class="form-control" name="nama_lengkap"
+       value="{{ job_seeker.nama_lengkap ?? session.user.nama }}">
+                    </div>
+
+                    
+
+                    <div class="col-md-6">
+                        <label class="form-label">Asal Kota</label>
+                        <input type="text" class="form-control" name="lokasi" value="{{ job_seeker.lokasi ?? '' }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">No Telepon</label>
+                        <input type="text" class="form-control" name="no_telp" value="{{ job_seeker.no_telp ?? '' }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Tanggal Lahir</label>
+                        <input type="date" class="form-control" name="tanggal_lahir" value="{{ job_seeker.tanggal_lahir ?? '' }}">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Keahlian</label>
+                        <input type="text" class="form-control" name="keahlian" value="{{ job_seeker.keahlian ?? '' }}">
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label">Bio</label>
+                        <textarea class="form-control" name="bio" rows="4">{{ job_seeker.bio ?? '' }}</textarea>
+                    </div>
+                </div>
+
+                <div class="text-end mt-4">
+                    <button type="submit" class="btn btn-save px-4 py-2 text-white">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

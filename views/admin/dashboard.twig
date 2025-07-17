@@ -4,35 +4,76 @@
 {% block page_subtitle %}Selamat datang, <strong>{{ session.user.nama }}</strong>{% endblock %}
 
 {% block content %}
+
+{# ---------- A. STATISTIK KARTU ---------- #}
 <div class="row mt-4">
+    {% set cards = [
+        {'bg':'#9FC87E','icon':'briefcase-fill','title':'Total Lowongan','value':totalLowongan},
+        {'bg':'#06923E','icon':'person-badge-fill','title':'Pengguna Terdaftar','value':totalUser},
+        {'bg':'#3a633aff','icon':'envelope-paper-fill','title':'Lamaran Masuk','value':totalPelamar}
+    ] %}
+    {% for c in cards %}
     <div class="col-md-4 mb-4">
-        <div class="p-4 rounded shadow-sm d-flex align-items-center" style="background-color: #A5C882;">
-            <i class="bi bi-briefcase-fill fs-2 text-white me-3"></i>
+        <div class="p-4 rounded shadow-sm d-flex align-items-center" style="background-color: {{ c.bg }};">
+            <i class="bi bi-{{ c.icon }} fs-2 text-white me-3"></i>
             <div>
-                <h6 class="text-white mb-1">Total Lowongan</h6>
-                <h4 class="text-white fw-bold">{{ totalLowongan }}</h4>
+                <h6 class="text-white mb-1">{{ c.title }}</h6>
+                <h4 class="text-white fw-bold">{{ c.value }}</h4>
             </div>
         </div>
     </div>
-
-    <div class="col-md-4 mb-4">
-        <div class="p-4 rounded shadow-sm d-flex align-items-center" style="background-color: #3A6351;">
-            <i class="bi bi-person-badge-fill fs-2 text-white me-3"></i>
-            <div>
-                <h6 class="text-white mb-1">Pengguna Terdaftar</h6>
-                <h4 class="text-white fw-bold">{{ totalUser }}</h4>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-4 mb-4">
-        <div class="p-4 rounded shadow-sm d-flex align-items-center" style="background-color: #2E2E2E;">
-            <i class="bi bi-envelope-paper-fill fs-2 text-white me-3"></i>
-            <div>
-                <h6 class="text-white mb-1">Lamaran Masuk</h6>
-                <h4 class="text-white fw-bold">{{ totalPelamar }}</h4>
-            </div>
-        </div>
-    </div>
+    {% endfor %}
 </div>
+
+
+
+{# ---------- B. TABEL LOWONGAN ---------- #}
+{% if jobs|length > 0 %}
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white fw-bold">Lowongan Terbaru</div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                <th style="width:50px;">No</th>
+                <th>Perusahaan</th>
+                <th>Judul</th>
+                <th>Lokasi</th>
+                <th>Gaji</th>
+                <th>Kategori</th>
+                <th>Status</th>
+                <th>Dibuat</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for job in jobs %}
+            <tr>
+            
+                <td>{{ loop.index }}</td>
+                <td>{{ job.nama_perusahaan }}</td>
+                <td>{{ job.judul }}</td>
+                <td>{{ job.lokasi }}</td>
+                <td>Rp {{ job.gaji|number_format(0, ',', '.') }}</td>
+                <td>{{ job.nama_kategori }}</td>
+                <td>
+                    {% if job.status == 'aktif' %}
+                        <span class="badge" style="background-color:#06923E;color:#FFFFFF;font-weight:600;">Aktif</span>
+                    {% else %}
+                        <span class="badge" style="background-color:#CC4F4F;color:#FFFFFF;font-weight:600;">Nonaktif</span>
+                    {% endif %}
+                </td>
+                <td>{{ job.created_at|date('d M Y') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert text-center"
+     style="background-color:#FAFAFA;color:#2E2E2E;border:1px solid #E0E0E0;border-radius:8px;padding:1.5rem;font-style:italic;">
+     Belum ada lowongan.
+</div>
+{% endif %}
+
 {% endblock %}

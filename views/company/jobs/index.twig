@@ -40,15 +40,25 @@
                          
                                         <td>
                     {% if job.status == 'aktif' %}
-                    <span class="badge" style="background-color: #ceeeafff; color: #000000ff; font-weight: 600;">Aktif</span>
+                    <span class="badge" style="background-color: #608b35ff; color: #ffffffff; font-weight: 600;">Aktif</span>
                     {% else %}
-                    <span class="badge" style="background-color: #E0E0E0; color: #2E2E2E; font-weight: 600;">Nonaktif</span>
+                    <span class="badge" style="background-color: #c75050ff; color: #ffffffff; font-weight: 600;">Nonaktif</span>
                     {% endif %}
                 </td>
-                        <td>
-                            <a href="{{ base_path() }}/company/jobs/edit/{{ job.id }}" class="btn btn-sm btn-warning rounded-pill px-3">Edit</a>
-                            <a href="{{ base_path() }}/company/jobs/delete/{{ job.id }}" class="btn btn-sm btn-danger rounded-pill px-3" onclick="return confirm('Yakin ingin menghapus?')">Hapus</a>
-                        </td>
+                       <td> 
+    <a href="{{ base_path() }}/company/jobs/edit/{{ job.id }}" 
+       class="btn btn-sm text-white rounded-pill px-3" 
+       style="background-color: #1D3557;">
+       Edit
+    </a>
+
+    <a href="{{ base_path() }}/company/jobs/delete/{{ job.id }}" 
+       class="btn btn-sm btn-danger rounded-pill px-3 " 
+       onclick="return confirm('Yakin ingin menghapus?')">
+       Hapus
+    </a>
+</td>
+
                     </tr>
                 {% endfor %}
             {% else %}

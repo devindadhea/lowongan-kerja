@@ -7,6 +7,18 @@
 <div class="card shadow-sm border-0">
     <div class="card-body">
         <form action="{{ base_path() }}/company/jobs/update/{{ job.id }}" method="POST">
+
+        
+            <div class="mb-3">
+                <label for="kategori" class="form-label">Kategori</label>
+                <select name="kategori_id" class="form-select" style="color: #000000; background-color: #ffffff;">
+                    <option value="">-- Pilih Kategori --</option>
+                    {% for kat in categories %}
+                        <option value="{{ kat.id }}">{{ kat.nama_kategori }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
             <div class="mb-3">
                 <label for="judul" class="form-label">Judul Lowongan</label>
                 <input type="text" name="judul" id="judul" class="form-control" value="{{ job.judul }}" required>
@@ -21,17 +33,11 @@
                 required>
             </div>
 
-
-            <div class="mb-3">
-                <label for="kategori" class="form-label">Kategori</label>
-                <select name="kategori_id" class="form-select" style="color: #000000; background-color: #ffffff;">
-                    <option value="">-- Pilih Kategori --</option>
-                    {% for kat in categories %}
-                        <option value="{{ kat.id }}">{{ kat.nama_kategori }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+                <option value="aktif" {{ job.status == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                <option value="nonaktif" {{ job.status == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
+            </select>
 
             <div class="mb-3">
                 <label for="lokasi" class="form-label">Lokasi</label>
@@ -42,6 +48,9 @@
                 <label for="deskripsi" class="form-label">Deskripsi</label>
                 <textarea name="deskripsi" id="deskripsi" rows="5" class="form-control" required>{{ job.deskripsi }}</textarea>
             </div>
+
+
+            
 
             <button type="submit" class="btn text-white" style="background-color: #1D3557;">Perbarui</button>
             <a href="{{ base_path() }}/company/jobs" class="btn btn-secondary">Batal</a>

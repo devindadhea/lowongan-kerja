@@ -1,0 +1,83 @@
+{% extends 'layouts/master_company.twig' %}
+{% block title %}Daftar Pelamar{% endblock %}
+
+{% block content %}
+<h5 class="mb-4" style="color:#1D3557;">Daftar Pelamar</h5>
+
+{# —— flash message —— #}
+{% if flash_success %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+      {{ flash_success }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+{% endif %}
+
+<div class="table-responsive shadow-sm border rounded bg-white">
+  <table class="table table-hover align-middle mb-0">
+    <thead style="background:#1D3557;color:#FFF;">
+      <tr>
+        <th style="width:5%;">No</th>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>Lowongan</th>
+        <th>Tanggal Lamar</th>
+        <th>CV</th>
+        <th>Status</th>
+        <th style="width:20%;">Aksi</th>
+      </tr>
+    </thead>
+<tbody>
+  {% if pelamar is not empty %}
+    {% for p in pelamar %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ p.nama }}</td>
+        <td>{{ p.email }}</td>
+        <td>{{ p.judul }}</td>
+        <td>{{ p.tanggal_lamar|date('d-m-Y') }}</td>
+        <td>
+          {% if p.cv %}
+            <a href="{{ base_path() }}/company/pelamar/cv/{{ p.cv }}"
+               class="btn btn-sm btn-primary rounded-pill px-3"
+               target="_blank">Download CV</a>
+          {% else %}
+            <span class="text-muted fst-italic">Tidak ada</span>
+          {% endif %}
+        </td>
+        <td>
+          {% if p.status == 'accepted' %}
+            <span class="badge bg-success">Diterima</span>
+          {% elseif p.status == 'rejected' %}
+            <span class="badge bg-danger">Ditolak</span>
+          {% else %}
+            <span class="badge bg-secondary">Menunggu</span>
+          {% endif %}
+        </td>
+        <td class="text-end">
+          {% if p.status == 'pending' %}
+            <form method="POST" action="{{ base_path() }}/company/pelamar/status" class="d-inline">
+              <input type="hidden" name="application_id" value="{{ p.application_id }}">
+              <input type="hidden" name="status" value="accepted">
+              <button type="submit" class="btn btn-sm rounded-pill px-3" style="background:#1D3557; color:#FFF;">Terima</button>
+            </form>
+            <form method="POST" action="{{ base_path() }}/company/pelamar/status" class="d-inline ms-1">
+              <input type="hidden" name="application_id" value="{{ p.application_id }}">
+              <input type="hidden" name="status" value="rejected">
+              <button type="submit" class="btn btn-sm btn-danger rounded-pill px-3">Tolak</button>
+            </form>
+          {% else %}
+            <em class="text-muted">Sudah diproses</em>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  {% else %}
+    <tr>
+      <td colspan="8" class="text-center text-muted py-3">Belum ada pelamar.</td>
+    </tr>
+  {% endif %}
+</tbody>
+
+  </table>
+</div>
+{% endblock %}

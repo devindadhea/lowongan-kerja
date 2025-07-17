@@ -20,7 +20,7 @@
                         <th>Email</th>
                         <th>Lowongan</th>
                         <th>Status</th>
-                        <th style="width: 200px;">Aksi</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -38,24 +38,7 @@
                                 <span class="badge bg-danger">Ditolak</span>
                             {% endif %}
                         </td>
-                        <td>
-                            {% if pelamar.status == 'pending' %}
-                            <div class="d-flex gap-2">
-                                <form method="post" action="{{ base_path() }}/admin/applicants/status">
-                                    <input type="hidden" name="application_id" value="{{ pelamar.id }}">
-                                    <input type="hidden" name="status" value="accepted">
-                                    <button class="btn btn-success btn-sm w-100">Terima</button>
-                                </form>
-                                <form method="post" action="{{ base_path() }}/admin/applicants/status">
-                                    <input type="hidden" name="application_id" value="{{ pelamar.id }}">
-                                    <input type="hidden" name="status" value="rejected">
-                                    <button class="btn btn-danger btn-sm w-100">Tolak</button>
-                                </form>
-                            </div>
-                            {% else %}
-                                <span class="text-muted fst-italic">Sudah diproses</span>
-                            {% endif %}
-                        </td>
+
                     </tr>
                     {% endfor %}
                 </tbody>
