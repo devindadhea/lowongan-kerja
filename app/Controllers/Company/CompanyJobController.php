@@ -76,6 +76,7 @@ public function store(Request $request, Response $response): Response
         'deskripsi'   => $data['deskripsi'],
         'lokasi'      => $data['lokasi'],
         'gaji'        => $data['gaji'],
+        'status'      => $data['status'] ?? 'aktif',
         'kategori_id' => $kategori
     ]);
 
@@ -116,6 +117,7 @@ public function update(Request $request, Response $response, $args): Response
         'deskripsi'   => $data['deskripsi'],
         'lokasi'      => $data['lokasi'],
         'gaji'        => $data['gaji'],
+        'status'      => $data['status'],  
         'kategori_id' => $kategori
     ], [
         'id'      => $args['id'],

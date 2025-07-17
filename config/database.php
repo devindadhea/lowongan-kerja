@@ -2,7 +2,7 @@
 
 use Medoo\Medoo;
 
-// Kembalikan instance Medoo
+
 return new Medoo([
     'type'     => 'mysql',
     'host'     => 'localhost',

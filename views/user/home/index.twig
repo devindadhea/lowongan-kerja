@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Cari Lowongan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap 5 & Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      background: #f5f6f8;
+    }
+    .list-panel {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .job-card:hover {
+      background: #eef4ff;
+      cursor: pointer;
+    }
+    .job-card.active {
+      border: 2px solid #0d6efd;
+    }
+    .job-card small {
+      font-size: 0.85rem;
+    }
+    .form-label {
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+<!-- ===== 1. TOGGLE BUTTON & SIDEBAR ===== -->
+<!-- Sidebar -->
+<div id="sidebar"
+     class="group bg-white text-gray-800 w-16 hover:w-52 transition-all duration-300 flex flex-col items-center py-6 shadow-lg rounded-r-3xl overflow-hidden fixed h-full z-50">
+
+  <!-- Menu Atas -->
+  <div class="flex flex-col gap-4 mt-4 w-full items-center">
+
+    <a href="{{ base_path() }}/user/home"
+       class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg w-full group">
+      <i class="bi bi-search fs-5"></i>
+      <span class="hidden group-hover:inline text-sm">Cari Lowongan</span>
+    </a>
+
+    <a href="{{ base_path() }}/user/dashboard"
+       class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg w-full group">
+      <i class="bi bi-house fs-5"></i>
+      <span class="hidden group-hover:inline text-sm">Dashboard</span>
+    </a>
+
+    <a href="{{ base_path() }}/user/profile"
+       class="flex items-center gap-3 px-4 py-2 hover:bg-gray-100 rounded-lg w-full group">
+      <i class="bi bi-person-circle fs-5"></i>
+      <span class="hidden group-hover:inline text-sm">Profil Saya</span>
+    </a>
+
+
+  </div>
+
+  <!-- Menu Logout Bawah -->
+  <div class="mt-auto mb-4 w-full px-4">
+    <a href="{{ base_path() }}/logout"
+       onclick="return confirm('Yakin ingin logout?')"
+       class="flex items-center gap-3 px-4 py-2 text-red-600 hover:bg-red-100 rounded-lg w-full group">
+      <i class="bi bi-box-arrow-right fs-5"></i>
+      <span class="hidden group-hover:inline text-sm">Keluar</span>
+    </a>
+  </div>
+</div>
+
+
+
+<!-- ===== HERO FILTER ======================================================= -->
+<section class="py-5 text-white pl-20" style="background:#001a4b;">
+ <form class="container" method="GET" action="{{ url_for('user.home') }}">
+    <div class="row g-2 align-items-center">
+      <!-- Kata kunci -->
+      <div class="col-md-4">
+        <label class="form-label fw-bold">
+          <i class="bi bi-search me-2"></i> Pekerjaan / Perusahaan
+        </label>
+        <input name="q" value="{{ filters.q }}" class="form-control form-control-lg"
+               placeholder="Masukkan kata kunci">
+      </div>
+
+      <!-- Kategori -->
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          <i class="bi bi-tags me-2"></i> Kategori
+        </label>
+        <select name="kategori" class="form-select form-select-lg">
+          <option value="">Semua Kategori</option>
+          {% for c in categories %}
+            <option value="{{ c.id }}" {{ c.id == filters.cat ? 'selected' }}>
+              {{ c.nama_kategori }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Lokasi -->
+      <div class="col-md-3">
+        <label class="form-label fw-bold">
+          <i class="bi bi-geo-alt-fill me-2"></i> Lokasi
+        </label>
+        <input name="lokasi" value="{{ filters.lokasi }}" class="form-control form-control-lg"
+               placeholder="Masukkan kota atau wilayah">
+      </div>
+
+      <!-- Tombol -->
+      <div class="col-md-2 d-grid">
+        <label class="invisible">Cari</label>
+        <button class="btn btn-lg text-white" style="background:#e5007d;">
+          <i class="bi bi-search-heart-fill me-1"></i> Cari
+        </button>
+      </div>
+    </div>
+  </form>
+</section>
+
+<!-- ===== DUA KOLOM ========================================================= -->
+<div class="container my-4 pl-40">
+  <div class="row g-4">
+
+    <!-- KIRI : LIST -->
+    <div class="col-md-4">
+      <div class="list-panel">
+
+        {% if jobs|length == 0 %}
+          <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle me-2"></i> Tidak ada lowongan ditemukan.
+          </div>
+        {% else %}
+          {% for job in jobs %}
+            <div class="card mb-3 shadow-sm job-card"
+                 data-id="{{ job.id }}"
+                 data-title="{{ job.judul }}"
+                 data-company="{{ job.nama_perusahaan }}"
+                 data-location="{{ job.lokasi }}"
+                 data-desc="{{ job.deskripsi|e('html_attr') }}"
+                 data-date="{{ job.created_at|date('d M Y') }}">
+              <div class="card-body p-3">
+                <h6 class="mb-1">
+                  <i class="bi bi-briefcase-fill me-2 text-primary"></i>{{ job.judul }}
+                </h6>
+                <small class="text-muted">
+                  <i class="bi bi-building me-1"></i>{{ job.nama_perusahaan }}
+                  • <i class="bi bi-geo-alt-fill me-1"></i>{{ job.lokasi }}
+                </small><br>
+                <small class="text-success">
+                  <i class="bi bi-star-fill text-warning me-1"></i>Baru untuk kamu
+                </small>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %}
+
+      </div>
+    </div>
+
+    <!-- KANAN : DETAIL -->
+    <div class="col-md-8">
+      <div id="detailCard" class="card shadow-sm h-100">
+        <div class="card-body d-flex align-items-center justify-content-center text-muted">
+          <i class="bi bi-arrow-left-circle me-2"></i>
+          <em>Pilih salah satu lowongan di kiri</em>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- JS : Populate detail -->
+<script>
+document.querySelectorAll('.job-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.job-card.active').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+
+    document.getElementById('detailCard').innerHTML = `
+      <div class="card-body">
+        <h3><i class="bi bi-briefcase-fill me-2 text-primary"></i>${card.dataset.title}</h3>
+        <h6 class="text-muted">
+          <i class="bi bi-building me-1"></i>${card.dataset.company}
+          • <i class="bi bi-geo-alt-fill me-1"></i>${card.dataset.location}
+        </h6>
+        <span class="badge bg-light text-muted mb-3">
+          <i class="bi bi-calendar-event me-1"></i>${card.dataset.date}
+        </span>
+        <p><i class="bi bi-file-earmark-text me-2 text-success"></i>${card.dataset.desc}</p>
+<a class="btn btn-primary" href="{{ base_path() }}/user/jobs/apply/${card.dataset.id}">
+  <i class="bi bi-send-fill me-1"></i> Lamar Sekarang
+</a>
+
+      </div>`;
+  });
+});
+</script>

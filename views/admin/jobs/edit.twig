@@ -8,6 +8,8 @@
     <h2 class="fw-bold mb-3" style="color: #2E2E2E;">Edit Lowongan</h2>
 
     <form method="POST" action="{{ base_path() }}/admin/jobs/update/{{ job.id }}">
+
+
       <div class="mb-3">
         <label>Judul Lowongan</label>
         <input type="text" name="judul" class="form-control" value="{{ job.judul }}" required>
@@ -42,7 +44,6 @@
           <option value="nonaktif" {% if job.status == 'nonaktif' %}selected{% endif %}>Nonaktif</option>
         </select>
       </div>
-
       <button type="submit" class="btn text-white" style="background-color: #3A6351;">Update</button>
     </form>
   </div>

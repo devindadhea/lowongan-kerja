@@ -28,6 +28,16 @@ $container->set(Medoo::class, function () {
     ]);
 });
 
+use App\Controllers\User\UserProfileController;
+
+$container->set(UserProfileController::class, function($c) {
+    return new UserProfileController(
+        $c->get(Twig::class),
+        $c->get(Medoo::class)
+    );
+});
+
+
 // registrasi
 $container->set(Twig::class, function () {
     return Twig::create(__DIR__ . '/../views', ['cache' => false]);
@@ -55,6 +65,7 @@ function view($request, $response, $template, $data = [])
     $twig = $container->get(Twig::class); 
     return $twig->render($response, $template, $data);
 }
+
 
 function base_path()
 {

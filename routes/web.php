@@ -1,6 +1,7 @@
 <?php
 
 use App\Middleware\RoleMiddleware;
+use Slim\Routing\RouteCollectorProxy;
 use App\Controllers\AuthController;
 use App\Controllers\Admin\DashboardController;
 use App\Controllers\Admin\ApplicantController;
@@ -10,6 +11,12 @@ use App\Controllers\Admin\CategoryController;
 use App\Controllers\Company\DashboardController as CompanyDashboardController;
 use App\Controllers\Company\CompanyJobController;
 use App\Controllers\Company\CompanyProfileController;
+use App\Controllers\Company\PelamarController;
+use App\Controllers\User\HomeController;
+use App\Controllers\User\ApplicationController;
+use App\Controllers\User\UserDashboardController;
+use App\Controllers\User\UserProfileController;
+
 
 //LANDING
 $app->get('/', function ($request, $response) {
@@ -77,8 +84,40 @@ $app->group('/company', function ($group) {
     $group->post('/jobs/update/{id}', [CompanyJobController::class, 'update']);
     $group->get('/jobs/delete/{id}', [CompanyJobController::class, 'delete']);
 
-    // PROFILE
- $group->get('/profileCompany', CompanyProfileController::class . ':index');
-$group->post('/profileCompany', CompanyProfileController::class . ':update');
+    // ===== PROFIL PERUSAHAAN =====
+    $group->get ('/profileCompany', [CompanyProfileController::class, 'index']);
+    $group->post('/profileCompany', [CompanyProfileController::class, 'update']);
 
-})->add(new RoleMiddleware('company'));
+    // ===== DAFTAR PELAMAR & TERIMA/TOLAK =====
+    $group->get ('/pelamar',         [PelamarController::class, 'index'])
+          ->setName('company.pelamar');
+          
+    $group->post('/pelamar/status',  [PelamarController::class, 'updateStatus'])
+          ->setName('company.pelamar.status');
+
+    $group->get('/pelamar/cv/{file}', [PelamarController::class, 'downloadCV'])
+      ->setName('company.pelamar.cv');
+
+})->add(new \App\Middleware\RoleMiddleware('company'));
+
+
+//ROUTE USER
+
+//HOME USER
+$app->group('/user', function ($group) {
+    // Halaman utama & dashboard
+    $group->get('/home', HomeController::class . ':index')->setName('user.home');
+    $group->get('/dashboard', UserDashboardController::class . ':index')->setName('user.dashboard');
+
+    // ===== PROFILE USER =====
+    $group->get('/profile', \App\Controllers\User\UserProfileController::class . ':showProfile')->setName('user.profile');
+    $group->post('/profile', \App\Controllers\User\UserProfileController::class . ':updateProfile');
+    $group->post('/profile/foto', UserProfileController::class . ':updateFoto');
+
+    // ===== LAMARAN/JOBS =====
+    $group->group('/jobs', function ($g) {
+        $g->get('/apply/{id}',  ApplicationController::class . ':form')->setName('jobs.apply');
+        $g->post('/apply/{id}', ApplicationController::class . ':submit')->setName('jobs.submit');
+    });
+
+})->add(new \App\Middleware\RoleMiddleware('user'));
